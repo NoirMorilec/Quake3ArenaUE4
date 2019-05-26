@@ -1,13 +1,3 @@
-{
-	"FileVersion": 3,
-	"EngineAssociation": "4.22",
-	"Category": "",
-	"Description": "",
-	"Modules": [
-		{
-			"Name": "Quake3Arena",
-			"Type": "Runtime",
-			"LoadingPhase": "Default"
-		}
-	]
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:8adc6a65dfb2a94cf2d3dbdd01a56b091b43ff3045991df71566d55c74621821
+size 203
