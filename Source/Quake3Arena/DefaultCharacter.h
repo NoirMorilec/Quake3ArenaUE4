@@ -32,6 +32,9 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Mesh")
 		class UStaticMeshComponent* Weapon;
 
+	UPROPERTY(VisibleDefaultsOnly)
+		class USceneComponent* WeaponPivot;
+
 	void MoveForward(float value);
 	void MoveRight(float value);
 public:	
