@@ -52,11 +52,32 @@ void ADefaultCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAction("LeftMouse",EInputEvent::IE_Pressed, this, &ADefaultCharacter::LeftMousePressed);
+	PlayerInputComponent->BindAction("RightMouse", EInputEvent::IE_Pressed, this, &ADefaultCharacter::RightMousePressed);
+	PlayerInputComponent->BindAction("LeftMouse", EInputEvent::IE_Released, this, &ADefaultCharacter::LeftMousePressed);
+	PlayerInputComponent->BindAction("RightMouse", EInputEvent::IE_Released, this, &ADefaultCharacter::RightMousePressed);
+
 	PlayerInputComponent->BindAxis("MoveForward", this, &ADefaultCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ADefaultCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("TurnUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("TurnRight", this, &APawn::AddControllerYawInput);
 
+}
+
+void ADefaultCharacter::Attack()
+{
+}
+
+void ADefaultCharacter::StopAttack()
+{
+}
+
+void ADefaultCharacter::SecondaryAttack()
+{
+}
+
+void ADefaultCharacter::StopSecondaryAttack()
+{
 }
 
 void ADefaultCharacter::MoveForward(float Value)
@@ -75,4 +96,24 @@ void ADefaultCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(GetActorRightVector(), Value);
 	}
+}
+
+void ADefaultCharacter::LeftMousePressed()
+{
+	Attack();
+}
+
+void ADefaultCharacter::RightMousePressed()
+{
+	SecondaryAttack();
+}
+
+void ADefaultCharacter::LeftMouseReleased()
+{
+	StopAttack();
+}
+
+void ADefaultCharacter::RightMouseReleased()
+{
+	StopSecondaryAttack();
 }

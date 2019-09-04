@@ -37,6 +37,10 @@ protected:
 
 	void MoveForward(float value);
 	void MoveRight(float value);
+	void LeftMousePressed();
+	void LeftMouseReleased();
+	void RightMousePressed();
+	void RightMouseReleased();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -44,5 +48,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual void Attack();
+	virtual void StopAttack();
+	virtual void SecondaryAttack();
+	virtual void StopSecondaryAttack();
 
 };
