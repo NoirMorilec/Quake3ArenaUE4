@@ -20,16 +20,16 @@ ADefaultCharacter::ADefaultCharacter()
 	//RootComponent = Root;
 	RootComponent = GetCapsuleComponent();
 
-	WeaponPivot = CreateDefaultSubobject<USceneComponent>(TEXT("WeaponPivot"));
-	Weapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Weapon"));
+	//WeaponPivot = CreateDefaultSubobject<USceneComponent>(TEXT("WeaponPivot"));
+	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 
 
 	//GetCapsuleComponent()->SetupAttachment(Root);
 	GetMesh()->SetupAttachment(GetCapsuleComponent());
 	Camera->SetupAttachment(GetCapsuleComponent());
-	WeaponPivot->SetupAttachment(Camera);
-	Weapon->SetupAttachment(WeaponPivot);
+	//WeaponPivot->SetupAttachment(Camera);
+	Weapon->SetupAttachment(Camera);
 
 }
 
@@ -54,30 +54,16 @@ void ADefaultCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAction("LeftMouse",EInputEvent::IE_Pressed, this, &ADefaultCharacter::LeftMousePressed);
 	PlayerInputComponent->BindAction("RightMouse", EInputEvent::IE_Pressed, this, &ADefaultCharacter::RightMousePressed);
-	PlayerInputComponent->BindAction("LeftMouse", EInputEvent::IE_Released, this, &ADefaultCharacter::LeftMousePressed);
-	PlayerInputComponent->BindAction("RightMouse", EInputEvent::IE_Released, this, &ADefaultCharacter::RightMousePressed);
+	PlayerInputComponent->BindAction("LeftMouse", EInputEvent::IE_Released, this, &ADefaultCharacter::LeftMouseReleased);
+	PlayerInputComponent->BindAction("RightMouse", EInputEvent::IE_Released, this, &ADefaultCharacter::RightMouseReleased);
+	PlayerInputComponent->BindAction("Shift", EInputEvent::IE_Pressed, this, &ADefaultCharacter::ShiftPressed);
+	PlayerInputComponent->BindAction("Shift", EInputEvent::IE_Released, this, &ADefaultCharacter::ShiftReleased);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ADefaultCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ADefaultCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("TurnUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("TurnRight", this, &APawn::AddControllerYawInput);
 
-}
-
-void ADefaultCharacter::Attack()
-{
-}
-
-void ADefaultCharacter::StopAttack()
-{
-}
-
-void ADefaultCharacter::SecondaryAttack()
-{
-}
-
-void ADefaultCharacter::StopSecondaryAttack()
-{
 }
 
 void ADefaultCharacter::MoveForward(float Value)
@@ -100,20 +86,24 @@ void ADefaultCharacter::MoveRight(float Value)
 
 void ADefaultCharacter::LeftMousePressed()
 {
-	Attack();
 }
 
 void ADefaultCharacter::RightMousePressed()
 {
-	SecondaryAttack();
 }
 
 void ADefaultCharacter::LeftMouseReleased()
 {
-	StopAttack();
 }
 
 void ADefaultCharacter::RightMouseReleased()
 {
-	StopSecondaryAttack();
+}
+
+void ADefaultCharacter::ShiftPressed()
+{
+}
+
+void ADefaultCharacter::ShiftReleased()
+{
 }

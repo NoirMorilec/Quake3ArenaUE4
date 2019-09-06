@@ -19,38 +19,32 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Features")
 		float Health;
 
-	UPROPERTY(VisibleAnywhere)
-		class UPrimitiveComponent* Root;
-
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleDefaultsOnly)
 		class UCameraComponent* Camera;
 
-	/** Gun mesh: 1st person view (seen only by self) */
-	UPROPERTY(VisibleDefaultsOnly, Category = "Mesh")
-		class UStaticMeshComponent* Weapon;
+	UPROPERTY(VisibleDefaultsOnly)
+		class USkeletalMeshComponent* Weapon;
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class USceneComponent* WeaponPivot;
 
 	void MoveForward(float value);
 	void MoveRight(float value);
-	void LeftMousePressed();
-	void LeftMouseReleased();
-	void RightMousePressed();
-	void RightMouseReleased();
+
+	virtual void LeftMousePressed();
+	virtual void LeftMouseReleased();
+	virtual void RightMousePressed();
+	virtual void RightMouseReleased();
+	virtual void ShiftPressed();
+	virtual void ShiftReleased();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	virtual void Attack();
-	virtual void StopAttack();
-	virtual void SecondaryAttack();
-	virtual void StopSecondaryAttack();
 
 };

@@ -10,16 +10,39 @@ UCLASS()
 class QUAKE3ARENA_API ABastion : public ADamageClass
 {
 	GENERATED_BODY()
-
 public:
-
+	ABastion();
 protected: 
-	void Attack() override;
-	void StopAttack() override;
-	void SecondaryAttack() override;
-	void StopSecondaryAttack() override;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCameraComponent* IdleCamera;
+
+	/** Gun mesh: 1st person view (seen only by self) */
+	UPROPERTY(VisibleDefaultsOnly)
+		class UStaticMeshComponent* IdleWeapon;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		class USceneComponent* IdleWeaponPivot;
+
+	enum BastionState
+	{
+		WALK,
+		STAY,
+		ULTIMATE
+	};
+	BastionState State;
+
+	void LeftMousePressed() override;
+	void LeftMouseReleased() override;
+	void RightMousePressed() override;
+	void RightMouseReleased() override;
+	void ShiftPressed() override;
+
+	UFUNCTION()
 	void RotateWeapon();
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Features")
 		FRotator SpeedRotation;
+
+	FTimerHandle SpeedRotationTimer;
 };
