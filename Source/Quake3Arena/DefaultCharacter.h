@@ -31,8 +31,21 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly)
 		class USceneComponent* WeaponPivot;
 
+	ADefaultCharacter* MyPawn;
+
+	class UAudioComponent* FireAC;
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	class USoundCue* LeftMouseSound;
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	class USoundCue* RightMouseSound;
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	class USoundCue* ShiftSound;
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	class USoundCue* UltimateSound;
+
 	void MoveForward(float value);
 	void MoveRight(float value);
+	class UAudioComponent* PlaySound(class USoundCue* Sound);
 
 	virtual void LeftMousePressed();
 	virtual void LeftMouseReleased();

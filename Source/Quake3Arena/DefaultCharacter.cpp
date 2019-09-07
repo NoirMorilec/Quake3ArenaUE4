@@ -8,6 +8,10 @@
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/PrimitiveComponent.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundCue.h"
+#include "Kismet/GameplayStatics.h"
+#define print(str) GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, FString::FString(str));
 
 // Sets default values
 ADefaultCharacter::ADefaultCharacter()
@@ -31,13 +35,15 @@ ADefaultCharacter::ADefaultCharacter()
 	//WeaponPivot->SetupAttachment(Camera);
 	Weapon->SetupAttachment(Camera);
 
+	MyPawn = this;
+	FireAC = NULL;
+
 }
 
 // Called when the game starts or when spawned
 void ADefaultCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -63,7 +69,42 @@ void ADefaultCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis("MoveRight", this, &ADefaultCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("TurnUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("TurnRight", this, &APawn::AddControllerYawInput);
+}
 
+
+
+void ADefaultCharacter::LeftMousePressed()
+{
+	if (!FireAC)
+	{
+		FireAC = PlaySound(LeftMouseSound);
+	}
+}
+
+void ADefaultCharacter::RightMousePressed()
+{
+
+}
+
+void ADefaultCharacter::LeftMouseReleased()
+{
+	if (FireAC)
+	{
+		FireAC->FadeOut(0.1f, 0.0f);
+		FireAC = NULL;
+	}
+}
+
+void ADefaultCharacter::RightMouseReleased()
+{
+}
+
+void ADefaultCharacter::ShiftPressed()
+{
+}
+
+void ADefaultCharacter::ShiftReleased()
+{
 }
 
 void ADefaultCharacter::MoveForward(float Value)
@@ -84,26 +125,7 @@ void ADefaultCharacter::MoveRight(float Value)
 	}
 }
 
-void ADefaultCharacter::LeftMousePressed()
+UAudioComponent * ADefaultCharacter::PlaySound(USoundCue * Sound)
 {
-}
-
-void ADefaultCharacter::RightMousePressed()
-{
-}
-
-void ADefaultCharacter::LeftMouseReleased()
-{
-}
-
-void ADefaultCharacter::RightMouseReleased()
-{
-}
-
-void ADefaultCharacter::ShiftPressed()
-{
-}
-
-void ADefaultCharacter::ShiftReleased()
-{
+	return Sound && MyPawn? UGameplayStatics::SpawnSoundAttached(Sound, MyPawn->GetRootComponent()) : NULL;
 }

@@ -13,6 +13,7 @@ class QUAKE3ARENA_API ABastion : public ADamageClass
 public:
 	ABastion();
 protected: 
+	
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCameraComponent* IdleCamera;
@@ -23,6 +24,10 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class USceneComponent* IdleWeaponPivot;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	class USoundCue* LeftMouseSoundIdle;
+	class USoundCue* PrevSound;
 
 	enum BastionState
 	{
@@ -37,12 +42,18 @@ protected:
 	void RightMousePressed() override;
 	void RightMouseReleased() override;
 	void ShiftPressed() override;
+	void ChangeTransform(bool bWalk);
 
 	UFUNCTION()
 	void RotateWeapon();
+	UFUNCTION()
+	void EnableSystem(); //After transform we should enable sounds and input
 
 	UPROPERTY(EditAnywhere, Category = "Features")
-		FRotator SpeedRotation;
+	float SpeedRotation;
+	UPROPERTY(EditDefaultsOnly, Category = "Features")
+		float TimeToTransform;
 
 	FTimerHandle SpeedRotationTimer;
+	FTimerHandle TransformationTimer;
 };
