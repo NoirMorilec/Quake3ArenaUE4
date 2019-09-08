@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "DamageClass.h"
+#include "LinetraceType.h"
 #include "Bastion.generated.h"
 
 UCLASS()
@@ -12,21 +13,21 @@ class QUAKE3ARENA_API ABastion : public ADamageClass
 	GENERATED_BODY()
 public:
 	ABastion();
-protected: 
 	
+protected: 
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCameraComponent* IdleCamera;
-
 	/** Gun mesh: 1st person view (seen only by self) */
 	UPROPERTY(VisibleDefaultsOnly)
-		class UStaticMeshComponent* IdleWeapon;
-
+		class UStaticMeshComponent* IdleWeaponMesh;
 	UPROPERTY(VisibleDefaultsOnly)
 		class USceneComponent* IdleWeaponPivot;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	class USoundCue* LeftMouseSoundIdle;
+	UPROPERTY(VisibleDefaultsOnly)
+		ULinetraceType* LinetraceWeapon;
+
 	class USoundCue* PrevSound;
 
 	enum BastionState
@@ -36,6 +37,7 @@ protected:
 		ULTIMATE
 	};
 	BastionState State;
+	
 
 	void LeftMousePressed() override;
 	void LeftMouseReleased() override;
