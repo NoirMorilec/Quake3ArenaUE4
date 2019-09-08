@@ -25,7 +25,7 @@ ADefaultCharacter::ADefaultCharacter()
 	RootComponent = GetCapsuleComponent();
 
 	//WeaponPivot = CreateDefaultSubobject<USceneComponent>(TEXT("WeaponPivot"));
-	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
+	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 
 
@@ -33,7 +33,7 @@ ADefaultCharacter::ADefaultCharacter()
 	GetMesh()->SetupAttachment(GetCapsuleComponent());
 	Camera->SetupAttachment(GetCapsuleComponent());
 	//WeaponPivot->SetupAttachment(Camera);
-	Weapon->SetupAttachment(Camera);
+	WeaponMesh->SetupAttachment(Camera);
 
 	MyPawn = this;
 	FireAC = NULL;

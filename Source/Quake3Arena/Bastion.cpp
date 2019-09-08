@@ -19,19 +19,19 @@ ABastion::ABastion()
 	State = WALK;
 
 	IdleWeaponPivot = CreateDefaultSubobject<USceneComponent>(TEXT("IdleWeaponPivot"));
-	IdleWeapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("IdleWeapon"));
+	IdleWeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("IdleWeapon"));
 	IdleCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("IdleCamera"));
-
+	LinetraceWeapon = CreateDefaultSubobject<ULinetraceType>(TEXT("LinetraceWeapon"));
 
 	//GetCapsuleComponent()->SetupAttachment(Root);
 	IdleCamera->SetupAttachment(GetCapsuleComponent());
 	IdleWeaponPivot->SetupAttachment(IdleCamera);
-	IdleWeapon->SetupAttachment(IdleWeaponPivot);
+	IdleWeaponMesh->SetupAttachment(IdleWeaponPivot);
 
 	IdleCamera->SetActive(false);
 	Camera->SetActive(true);
-	IdleWeapon->SetVisibility(false);
-	Weapon->SetVisibility(true);
+	IdleWeaponMesh->SetVisibility(false);
+	WeaponMesh->SetVisibility(true);
 
 	SpeedRotation = 20.f;
 	TimeToTransform = 1.5f;
@@ -103,9 +103,9 @@ void ABastion::ChangeTransform(bool bWalk)
 	PlaySound(ShiftSound);
 	DisableInput(Cast<APlayerController>(MyPawn->Controller));
 	Camera->SetActive(bWalk);
-	Weapon->SetVisibility(bWalk);
+	WeaponMesh->SetVisibility(bWalk);
 	IdleCamera->SetActive(!bWalk);
-	IdleWeapon->SetVisibility(!bWalk);
+	IdleWeaponMesh->SetVisibility(!bWalk);
 	GetWorld()->GetTimerManager().SetTimer(TransformationTimer, this, &ABastion::EnableSystem, TimeToTransform, false);
 }
 
