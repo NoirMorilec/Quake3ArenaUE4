@@ -4,6 +4,7 @@
 #include "LinetraceType.h"
 #include "Engine/World.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "TimerManager.h"
 #define print(str) GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, FString::FString(str));
 
 ULinetraceType::ULinetraceType()
@@ -27,14 +28,13 @@ void ULinetraceType::StartShooting()
 		{
 			if (OutHit.bBlockingHit)
 			{
-				if (GEngine) {
-
+				if (GEngine) 
+				{
 					GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::Printf(TEXT("You are hitting: %s"), *OutHit.GetActor()->GetName()));
-					GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::Printf(TEXT("Impact Point: %s"), *OutHit.ImpactPoint.ToString()));
-					GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::Printf(TEXT("Normal Point: %s"), *OutHit.ImpactNormal.ToString()));
-
 				}
 			}
 		}
 	}
+
+	GetWorld()->GetTimerManager().SetTimer(FiringTimer, this, &ULinetraceType::StartShooting, TimeBetweenShots, false);
 }

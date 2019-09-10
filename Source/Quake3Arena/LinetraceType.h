@@ -12,9 +12,6 @@ UCLASS()
 class QUAKE3ARENA_API ULinetraceType : public UWeaponBaseType
 {
 	GENERATED_BODY()
-protected:
-
-	FTimerHandle FiringTimer;
 
 public:
 	ULinetraceType();

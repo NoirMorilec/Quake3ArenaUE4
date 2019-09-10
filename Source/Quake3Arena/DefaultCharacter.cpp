@@ -33,6 +33,7 @@ ADefaultCharacter::ADefaultCharacter()
 	WeaponPivot->SetupAttachment(Camera);
 	WeaponMesh->SetupAttachment(WeaponPivot);
 
+	bCanWalk = true;
 	FireAC = NULL;
 }
 
@@ -105,7 +106,7 @@ void ADefaultCharacter::ShiftReleased()
 
 void ADefaultCharacter::MoveForward(float Value)
 {
-	if (Value != 0.0f)
+	if (Value != 0.0f && bCanWalk)
 	{
 		// add movement in that direction
 		AddMovementInput(GetActorForwardVector(), Value);
@@ -114,7 +115,7 @@ void ADefaultCharacter::MoveForward(float Value)
 
 void ADefaultCharacter::MoveRight(float Value)
 {
-	if (Value != 0.0f)
+	if (Value != 0.0f && bCanWalk)
 	{
 		// add movement in that direction
 		AddMovementInput(GetActorRightVector(), Value);

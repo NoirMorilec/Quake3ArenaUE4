@@ -24,6 +24,7 @@ void UWeaponBaseType::BeginPlay()
 
 void UWeaponBaseType::StopShooting()
 {
+
 }
 
 // Called every frame

@@ -12,6 +12,7 @@
 #include "Components/AudioComponent.h"
 #include "Gameframework/PlayerController.h"
 #include "Sound/SoundCue.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #define print(str) GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, FString::FString(str));
 
 ABastion::ABastion()
@@ -31,7 +32,6 @@ ABastion::ABastion()
 	Camera->SetActive(true);
 	IdleWeaponMesh->SetVisibility(false);
 	WeaponMesh->SetVisibility(true);
-	bIsWalking = true;
 
 	/*if (WeaponSockets.Num() == 2)
 	{
@@ -48,7 +48,7 @@ void ABastion::LeftMousePressed()
 {
 	Super::LeftMousePressed();
 
-	if (bIsWalking)
+	if (bCanWalk)
 	{
 		Rifle->SetMeshPtr(WeaponMesh);
 		Rifle->StartShooting();
@@ -65,6 +65,8 @@ void ABastion::LeftMouseReleased()
 	Super::LeftMouseReleased();
 
 	GetWorld()->GetTimerManager().ClearTimer(SpeedRotationTimer);
+	GetWorld()->GetTimerManager().ClearTimer(Rifle->FiringTimer);
+	GetWorld()->GetTimerManager().ClearTimer(MachineGun->FiringTimer);
 }
 
 void ABastion::RightMousePressed()
@@ -80,7 +82,7 @@ void ABastion::RightMouseReleased()
 void ABastion::ShiftPressed()
 {
 	Swap(LeftMouseSound, LeftMouseSoundIdle);
-	ChangeTransformTo(!bIsWalking);
+	ChangeTransformTo(!bCanWalk);
 }
 
 void ABastion::ChangeTransformTo(bool bNewState)
@@ -93,7 +95,7 @@ void ABastion::ChangeTransformTo(bool bNewState)
 	WeaponMesh->SetVisibility(bNewState);
 	IdleWeaponMesh->SetVisibility(!bNewState);
 	GetWorld()->GetTimerManager().SetTimer(TransformationTimer, this, &ABastion::EnableSystem, TimeToTransform, false);
-	bIsWalking = bNewState;
+	bCanWalk = bNewState;
 }
 
 void ABastion::EnableSystem()

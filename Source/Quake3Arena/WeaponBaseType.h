@@ -39,6 +39,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon settings")
 		float BulletDistance;
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon settings")
+		float TimeBetweenShots;
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon settings")
 		FName WeaponSocket;
 
 
@@ -50,4 +52,5 @@ public:
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class USkeletalMeshComponent* WeaponMeshPtr;
+	FTimerHandle FiringTimer;
 };

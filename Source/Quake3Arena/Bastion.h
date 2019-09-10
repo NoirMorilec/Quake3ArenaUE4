@@ -31,9 +31,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	class USoundCue* LeftMouseSoundIdle;
 
-	bool bIsWalking;
-	
-
 	void LeftMousePressed() override;
 	void LeftMouseReleased() override;
 	void RightMousePressed() override;

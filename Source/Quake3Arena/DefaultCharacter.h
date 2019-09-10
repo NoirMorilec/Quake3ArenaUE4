@@ -42,6 +42,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	class USoundCue* UltimateSound;
 
+	bool bCanWalk;
 	void MoveForward(float value);
 	void MoveRight(float value);
 	class UAudioComponent* PlaySound(class USoundCue* Sound);
