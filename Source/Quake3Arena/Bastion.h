@@ -18,25 +18,20 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCameraComponent* IdleCamera;
-	/** Gun mesh: 1st person view (seen only by self) */
 	UPROPERTY(VisibleDefaultsOnly)
-		class UStaticMeshComponent* IdleWeaponMesh;
+		class USkeletalMeshComponent* IdleWeaponMesh;
 	UPROPERTY(VisibleDefaultsOnly)
 		class USceneComponent* IdleWeaponPivot;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		ULinetraceType* Rifle;
+	UPROPERTY(VisibleDefaultsOnly)
+		ULinetraceType* MachineGun;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	class USoundCue* LeftMouseSoundIdle;
-	UPROPERTY(VisibleDefaultsOnly)
-		ULinetraceType* LinetraceWeapon;
 
-	class USoundCue* PrevSound;
-
-	enum BastionState
-	{
-		WALK,
-		STAY,
-		ULTIMATE
-	};
-	BastionState State;
+	bool bIsWalking;
 	
 
 	void LeftMousePressed() override;
@@ -44,7 +39,7 @@ protected:
 	void RightMousePressed() override;
 	void RightMouseReleased() override;
 	void ShiftPressed() override;
-	void ChangeTransform(bool bWalk);
+	void ChangeTransformTo(bool bNewState);
 
 	UFUNCTION()
 	void RotateWeapon();
@@ -54,7 +49,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Features")
 	float SpeedRotation;
 	UPROPERTY(EditDefaultsOnly, Category = "Features")
-		float TimeToTransform;
+	float TimeToTransform;
 
 	FTimerHandle SpeedRotationTimer;
 	FTimerHandle TransformationTimer;

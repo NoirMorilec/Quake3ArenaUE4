@@ -16,12 +16,11 @@
 
 ABastion::ABastion()
 {
-	State = WALK;
-
 	IdleWeaponPivot = CreateDefaultSubobject<USceneComponent>(TEXT("IdleWeaponPivot"));
-	IdleWeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("IdleWeapon"));
+	IdleWeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("IdleWeaponMesh"));
 	IdleCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("IdleCamera"));
-	LinetraceWeapon = CreateDefaultSubobject<ULinetraceType>(TEXT("LinetraceWeapon"));
+	Rifle = CreateDefaultSubobject<ULinetraceType>(TEXT("Rifle"));
+	MachineGun = CreateDefaultSubobject<ULinetraceType>(TEXT("MachineGun"));
 
 	//GetCapsuleComponent()->SetupAttachment(Root);
 	IdleCamera->SetupAttachment(GetCapsuleComponent());
@@ -32,6 +31,14 @@ ABastion::ABastion()
 	Camera->SetActive(true);
 	IdleWeaponMesh->SetVisibility(false);
 	WeaponMesh->SetVisibility(true);
+	bIsWalking = true;
+
+	/*if (WeaponSockets.Num() == 2)
+	{
+		Rifle->SetStartVector(GetMesh()->GetSocketLocation(WeaponSockets[0]));
+		MachineGun->SetStartVector(GetMesh()->GetSocketLocation(WeaponSockets[1]));
+	}*/
+	
 
 	SpeedRotation = 20.f;
 	TimeToTransform = 1.5f;
@@ -41,17 +48,15 @@ void ABastion::LeftMousePressed()
 {
 	Super::LeftMousePressed();
 
-	switch (State)
+	if (bIsWalking)
 	{
-	case WALK:
-		break;
-	case STAY:
-		RotateWeapon();
-		break;
-	case ULTIMATE:
-		break;
-	default:
-		break;
+		Rifle->SetMeshPtr(WeaponMesh);
+		Rifle->StartShooting();
+	}
+	else
+	{
+		MachineGun->SetMeshPtr(IdleWeaponMesh);
+		MachineGun->StartShooting();
 	}
 }
 
@@ -74,44 +79,26 @@ void ABastion::RightMouseReleased()
 
 void ABastion::ShiftPressed()
 {
-	switch (State)
-	{
-	case ABastion::WALK:
-		State = STAY;
-		ChangeTransform(false);
-		PrevSound = LeftMouseSound;
-		LeftMouseSound = LeftMouseSoundIdle;
-		break;
-
-	case ABastion::STAY:
-		State = WALK;
-		ChangeTransform(true);
-		LeftMouseSound = PrevSound;
-		break;
-
-	case ABastion::ULTIMATE:
-		break;
-
-	default:
-		break;
-	}
+	Swap(LeftMouseSound, LeftMouseSoundIdle);
+	ChangeTransformTo(!bIsWalking);
 }
 
-void ABastion::ChangeTransform(bool bWalk)
+void ABastion::ChangeTransformTo(bool bNewState)
 {
 	if (FireAC) FireAC->Stop();
 	PlaySound(ShiftSound);
-	DisableInput(Cast<APlayerController>(MyPawn->Controller));
-	Camera->SetActive(bWalk);
-	WeaponMesh->SetVisibility(bWalk);
-	IdleCamera->SetActive(!bWalk);
-	IdleWeaponMesh->SetVisibility(!bWalk);
+	DisableInput(Cast<APlayerController>(this->Controller));
+	Camera->SetActive(bNewState);
+	IdleCamera->SetActive(!bNewState);
+	WeaponMesh->SetVisibility(bNewState);
+	IdleWeaponMesh->SetVisibility(!bNewState);
 	GetWorld()->GetTimerManager().SetTimer(TransformationTimer, this, &ABastion::EnableSystem, TimeToTransform, false);
+	bIsWalking = bNewState;
 }
 
 void ABastion::EnableSystem()
 {
-	EnableInput(Cast<APlayerController>(MyPawn->Controller));
+	EnableInput(Cast<APlayerController>(this->Controller));
 }
 
 void ABastion::RotateWeapon()

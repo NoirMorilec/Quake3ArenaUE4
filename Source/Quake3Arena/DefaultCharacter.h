@@ -25,16 +25,12 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCameraComponent* Camera;
 
+	
 	UPROPERTY(VisibleDefaultsOnly)
-		class USkeletalMeshComponent* WeaponMesh;
+		class USkeletalMeshComponent* WeaponMesh; 
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class USceneComponent* WeaponPivot;
-
-	ADefaultCharacter* MyPawn;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon settings")
-	FName WeaponSocketName;
 
 	class UAudioComponent* FireAC;
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
@@ -56,12 +52,13 @@ protected:
 	virtual void RightMouseReleased();
 	virtual void ShiftPressed();
 	virtual void ShiftReleased();
-	//virtual void AddWeaponType(AWeaponBase WeaponType);
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
 
 };

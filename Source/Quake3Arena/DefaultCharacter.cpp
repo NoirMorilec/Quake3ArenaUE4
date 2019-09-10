@@ -11,7 +11,6 @@
 #include "Components/AudioComponent.h"
 #include "Sound/SoundCue.h"
 #include "Kismet/GameplayStatics.h"
-#define print(str) GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, FString::FString(str));
 
 // Sets default values
 ADefaultCharacter::ADefaultCharacter()
@@ -24,20 +23,17 @@ ADefaultCharacter::ADefaultCharacter()
 	//RootComponent = Root;
 	RootComponent = GetCapsuleComponent();
 
-	//WeaponPivot = CreateDefaultSubobject<USceneComponent>(TEXT("WeaponPivot"));
-	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
+	WeaponPivot = CreateDefaultSubobject<USceneComponent>(TEXT("WeaponPivot"));
+	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 
 
 	//GetCapsuleComponent()->SetupAttachment(Root);
-	GetMesh()->SetupAttachment(GetCapsuleComponent());
 	Camera->SetupAttachment(GetCapsuleComponent());
-	//WeaponPivot->SetupAttachment(Camera);
-	WeaponMesh->SetupAttachment(Camera);
+	WeaponPivot->SetupAttachment(Camera);
+	WeaponMesh->SetupAttachment(WeaponPivot);
 
-	MyPawn = this;
 	FireAC = NULL;
-
 }
 
 // Called when the game starts or when spawned
@@ -127,5 +123,5 @@ void ADefaultCharacter::MoveRight(float Value)
 
 UAudioComponent * ADefaultCharacter::PlaySound(USoundCue * Sound)
 {
-	return Sound && MyPawn? UGameplayStatics::SpawnSoundAttached(Sound, MyPawn->GetRootComponent()) : NULL;
+	return Sound && this? UGameplayStatics::SpawnSoundAttached(Sound, this->GetRootComponent()) : NULL;
 }

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "DefaultCharacter.h"
 #include "WeaponBaseType.generated.h"
 
 
@@ -35,9 +36,18 @@ protected:
 	/*How many bullets will be used to fire before a pause (for ex. baptiste from overwatch with 3 bullets)*/
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon settings")
 		uint16 BurstAmmoExpense;
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon settings")
+		float BulletDistance;
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon settings")
+		FName WeaponSocket;
+
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void StartShooting();
+	virtual void StopShooting();
 
-		
+	UPROPERTY(VisibleDefaultsOnly)
+		class USkeletalMeshComponent* WeaponMeshPtr;
 };

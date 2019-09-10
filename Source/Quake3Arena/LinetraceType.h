@@ -4,14 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "WeaponBaseType.h"
+#include "DrawDebugHelpers.h"
 #include "LinetraceType.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class QUAKE3ARENA_API ULinetraceType : public UWeaponBaseType
 {
 	GENERATED_BODY()
+protected:
+
+	FTimerHandle FiringTimer;
+
+public:
+	ULinetraceType();
 	
+	ADefaultCharacter* Owner;
+
+	FORCEINLINE void SetMeshPtr(USkeletalMeshComponent* MeshPtr) { WeaponMeshPtr = MeshPtr; }
+	void StartShooting() override;
 };

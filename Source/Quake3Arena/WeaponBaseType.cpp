@@ -9,8 +9,7 @@ UWeaponBaseType::UWeaponBaseType()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
+	WeaponMeshPtr = NULL;
 }
 
 
@@ -23,6 +22,9 @@ void UWeaponBaseType::BeginPlay()
 	
 }
 
+void UWeaponBaseType::StopShooting()
+{
+}
 
 // Called every frame
 void UWeaponBaseType::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -30,5 +32,10 @@ void UWeaponBaseType::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UWeaponBaseType::StartShooting()
+{
+
 }
 
