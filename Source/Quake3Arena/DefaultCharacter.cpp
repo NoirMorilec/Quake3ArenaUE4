@@ -33,7 +33,8 @@ ADefaultCharacter::ADefaultCharacter()
 	WeaponPivot->SetupAttachment(Camera);
 	WeaponMesh->SetupAttachment(WeaponPivot);
 
-	bCanWalk = true;
+	bCanMove = true;
+	bMousePressed = false;
 	FireAC = NULL;
 }
 
@@ -61,6 +62,9 @@ void ADefaultCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("RightMouse", EInputEvent::IE_Released, this, &ADefaultCharacter::RightMouseReleased);
 	PlayerInputComponent->BindAction("Shift", EInputEvent::IE_Pressed, this, &ADefaultCharacter::ShiftPressed);
 	PlayerInputComponent->BindAction("Shift", EInputEvent::IE_Released, this, &ADefaultCharacter::ShiftReleased);
+	PlayerInputComponent->BindAction("Space", EInputEvent::IE_Pressed, this, &ADefaultCharacter::SpacePressed);
+	PlayerInputComponent->BindAction("Shift", EInputEvent::IE_Released, this, &ADefaultCharacter::SpaceReleased);
+
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ADefaultCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ADefaultCharacter::MoveRight);
@@ -72,6 +76,7 @@ void ADefaultCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 void ADefaultCharacter::LeftMousePressed()
 {
+	bMousePressed = true;
 	if (!FireAC)
 	{
 		FireAC = PlaySound(LeftMouseSound);
@@ -85,6 +90,7 @@ void ADefaultCharacter::RightMousePressed()
 
 void ADefaultCharacter::LeftMouseReleased()
 {
+	bMousePressed = false;
 	if (FireAC)
 	{
 		FireAC->FadeOut(0.1f, 0.0f);
@@ -104,9 +110,22 @@ void ADefaultCharacter::ShiftReleased()
 {
 }
 
+void ADefaultCharacter::SpacePressed()
+{
+	if (bCanMove)
+	{
+		Jump();
+	}
+}
+
+void ADefaultCharacter::SpaceReleased()
+{
+	ResetJumpState();
+}
+
 void ADefaultCharacter::MoveForward(float Value)
 {
-	if (Value != 0.0f && bCanWalk)
+	if (Value != 0.0f && bCanMove)
 	{
 		// add movement in that direction
 		AddMovementInput(GetActorForwardVector(), Value);
@@ -115,7 +134,7 @@ void ADefaultCharacter::MoveForward(float Value)
 
 void ADefaultCharacter::MoveRight(float Value)
 {
-	if (Value != 0.0f && bCanWalk)
+	if (Value != 0.0f && bCanMove)
 	{
 		// add movement in that direction
 		AddMovementInput(GetActorRightVector(), Value);

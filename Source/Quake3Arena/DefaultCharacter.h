@@ -42,7 +42,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	class USoundCue* UltimateSound;
 
-	bool bCanWalk;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bCanMove;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bMousePressed;
 	void MoveForward(float value);
 	void MoveRight(float value);
 	class UAudioComponent* PlaySound(class USoundCue* Sound);
@@ -53,6 +56,8 @@ protected:
 	virtual void RightMouseReleased();
 	virtual void ShiftPressed();
 	virtual void ShiftReleased();
+	virtual void SpacePressed();
+	virtual void SpaceReleased();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -61,5 +66,4 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
-
 };

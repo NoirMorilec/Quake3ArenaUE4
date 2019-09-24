@@ -39,8 +39,6 @@ protected:
 	void ChangeTransformTo(bool bNewState);
 
 	UFUNCTION()
-	void RotateWeapon();
-	UFUNCTION()
 	void EnableSystem(); //After transform we should enable sounds and input
 
 	UPROPERTY(EditAnywhere, Category = "Features")

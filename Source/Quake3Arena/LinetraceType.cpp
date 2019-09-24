@@ -17,24 +17,33 @@ void ULinetraceType::StartShooting()
 	if (Owner)
 	{
 		FHitResult OutHit;
-		FVector Start = WeaponMeshPtr ? 
-			WeaponMeshPtr->GetSocketLocation(WeaponSocket) : 
-			Owner->GetWeaponMesh()->GetSocketLocation(WeaponSocket);
-		FRotator ForwardView = Owner->GetViewRotation();
-		FVector End = ((ForwardView.Vector() * BulletDistance) + Start);
+		const int32 RandomSeed = FMath::Rand();
+		FRandomStream WeaponRandomStream(RandomSeed);
+		const float ConeHalfAngle = FMath::DegreesToRadians(LinetraceConfig.Spread);
+
+		const FVector Start = WeaponMeshPtr ? 
+			WeaponMeshPtr->GetSocketLocation(BaseConfig.WeaponSocket) :
+			Owner->GetWeaponMesh()->GetSocketLocation(BaseConfig.WeaponSocket);
+		const FVector AimDir = Owner->GetViewRotation().Vector();
+		const FVector ShootDir = WeaponRandomStream.VRandCone(AimDir, ConeHalfAngle);
+
+		const FVector End = ((ShootDir * BaseConfig.BulletDistance) + Start);
+
+		//DrawDebugCone(GetWorld(), Start, AimDir, BaseConfig.BulletDistance, ConeHalfAngle, ConeHalfAngle, 20, FColor::Red, false, 30.f);
+		DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1.f, 0, 1);
+
 		FCollisionQueryParams CollisionParams;
-		DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
 		if (GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams))
 		{
 			if (OutHit.bBlockingHit)
 			{
-				if (GEngine) 
+				if (GEngine)
 				{
-					GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::Printf(TEXT("You are hitting: %s"), *OutHit.GetActor()->GetName()));
+					//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::Printf(TEXT("You are hitting: %s"), *OutHit.GetActor()->GetName()));
 				}
 			}
 		}
 	}
 
-	GetWorld()->GetTimerManager().SetTimer(FiringTimer, this, &ULinetraceType::StartShooting, TimeBetweenShots, false);
+	GetWorld()->GetTimerManager().SetTimer(FiringTimer, this, &ULinetraceType::StartShooting, BaseConfig.TimeBetweenShots, false);
 }

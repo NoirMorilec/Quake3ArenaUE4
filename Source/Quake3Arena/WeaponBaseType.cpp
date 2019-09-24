@@ -10,6 +10,7 @@ UWeaponBaseType::UWeaponBaseType()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 	WeaponMeshPtr = NULL;
+
 }
 
 
@@ -26,6 +27,7 @@ void UWeaponBaseType::StopShooting()
 {
 
 }
+
 
 // Called every frame
 void UWeaponBaseType::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

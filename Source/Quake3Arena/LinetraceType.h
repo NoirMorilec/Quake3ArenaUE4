@@ -7,11 +7,29 @@
 #include "DrawDebugHelpers.h"
 #include "LinetraceType.generated.h"
 
+USTRUCT()
+struct FLinetraceConfigs
+{
+	GENERATED_BODY()
+	/*The spread of any weapon*/
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon settings")
+		float Spread;
+
+	FLinetraceConfigs()
+	{
+		Spread = 0;
+	}
+};
 
 UCLASS()
 class QUAKE3ARENA_API ULinetraceType : public UWeaponBaseType
 {
 	GENERATED_BODY()
+
+protected:
+
+	UPROPERTY(EditDefaultsOnly, Category = "Configs")
+	FLinetraceConfigs LinetraceConfig;
 
 public:
 	ULinetraceType();
@@ -20,4 +38,5 @@ public:
 
 	FORCEINLINE void SetMeshPtr(USkeletalMeshComponent* MeshPtr) { WeaponMeshPtr = MeshPtr; }
 	void StartShooting() override;
+
 };

@@ -48,7 +48,7 @@ void ABastion::LeftMousePressed()
 {
 	Super::LeftMousePressed();
 
-	if (bCanWalk)
+	if (bCanMove)
 	{
 		Rifle->SetMeshPtr(WeaponMesh);
 		Rifle->StartShooting();
@@ -71,7 +71,7 @@ void ABastion::LeftMouseReleased()
 
 void ABastion::RightMousePressed()
 {
-
+	print("yes")
 }
 
 void ABastion::RightMouseReleased()
@@ -82,30 +82,24 @@ void ABastion::RightMouseReleased()
 void ABastion::ShiftPressed()
 {
 	Swap(LeftMouseSound, LeftMouseSoundIdle);
-	ChangeTransformTo(!bCanWalk);
+	ChangeTransformTo(!bCanMove);
 }
 
 void ABastion::ChangeTransformTo(bool bNewState)
 {
 	if (FireAC) FireAC->Stop();
 	PlaySound(ShiftSound);
+	LeftMouseReleased();
 	DisableInput(Cast<APlayerController>(this->Controller));
 	Camera->SetActive(bNewState);
 	IdleCamera->SetActive(!bNewState);
 	WeaponMesh->SetVisibility(bNewState);
 	IdleWeaponMesh->SetVisibility(!bNewState);
 	GetWorld()->GetTimerManager().SetTimer(TransformationTimer, this, &ABastion::EnableSystem, TimeToTransform, false);
-	bCanWalk = bNewState;
+	bCanMove = bNewState;
 }
 
 void ABastion::EnableSystem()
 {
 	EnableInput(Cast<APlayerController>(this->Controller));
 }
-
-void ABastion::RotateWeapon()
-{
-	IdleWeaponPivot->AddLocalRotation(FRotator(0.f, 0.f, SpeedRotation));
-	GetWorld()->GetTimerManager().SetTimer(SpeedRotationTimer, this, &ABastion::RotateWeapon, GetWorld()->GetDeltaSeconds() , false);
-}
-
