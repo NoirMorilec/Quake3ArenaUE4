@@ -31,6 +31,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Configs")
 	FLinetraceConfigs LinetraceConfig;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	UParticleSystem* TrailFX;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	FName TrailTargetParam;
+
+	void SpawnTrailEffect(const FVector& StartPoint, const FVector& EndPoint);
+
 public:
 	ULinetraceType();
 	

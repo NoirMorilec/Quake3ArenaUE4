@@ -41,11 +41,8 @@ protected:
 	UFUNCTION()
 	void EnableSystem(); //After transform we should enable sounds and input
 
-	UPROPERTY(EditAnywhere, Category = "Features")
-	float SpeedRotation;
 	UPROPERTY(EditDefaultsOnly, Category = "Features")
 	float TimeToTransform;
 
-	FTimerHandle SpeedRotationTimer;
 	FTimerHandle TransformationTimer;
 };

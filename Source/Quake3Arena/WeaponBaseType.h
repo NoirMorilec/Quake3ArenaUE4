@@ -57,7 +57,7 @@ public:
 	virtual void StartShooting();
 	virtual void StopShooting();
 
-	UPROPERTY(VisibleDefaultsOnly)
+	UPROPERTY()
 	class USkeletalMeshComponent* WeaponMeshPtr;
 	FTimerHandle FiringTimer;
 };

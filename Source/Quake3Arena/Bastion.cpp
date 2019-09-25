@@ -39,8 +39,6 @@ ABastion::ABastion()
 		MachineGun->SetStartVector(GetMesh()->GetSocketLocation(WeaponSockets[1]));
 	}*/
 	
-
-	SpeedRotation = 20.f;
 	TimeToTransform = 1.5f;
 }
 
@@ -64,7 +62,6 @@ void ABastion::LeftMouseReleased()
 {
 	Super::LeftMouseReleased();
 
-	GetWorld()->GetTimerManager().ClearTimer(SpeedRotationTimer);
 	GetWorld()->GetTimerManager().ClearTimer(Rifle->FiringTimer);
 	GetWorld()->GetTimerManager().ClearTimer(MachineGun->FiringTimer);
 }

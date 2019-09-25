@@ -5,7 +5,10 @@
 #include "Engine/World.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "TimerManager.h"
+#include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
 #define print(str) GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, FString::FString(str));
+
 
 ULinetraceType::ULinetraceType()
 {
@@ -30,7 +33,7 @@ void ULinetraceType::StartShooting()
 		const FVector End = ((ShootDir * BaseConfig.BulletDistance) + Start);
 
 		//DrawDebugCone(GetWorld(), Start, AimDir, BaseConfig.BulletDistance, ConeHalfAngle, ConeHalfAngle, 20, FColor::Red, false, 30.f);
-		DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1.f, 0, 1);
+		//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1.f, 0, 1);
 
 		FCollisionQueryParams CollisionParams;
 		if (GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams))
@@ -43,7 +46,22 @@ void ULinetraceType::StartShooting()
 				}
 			}
 		}
+
+		SpawnTrailEffect(Start,End);
 	}
 
 	GetWorld()->GetTimerManager().SetTimer(FiringTimer, this, &ULinetraceType::StartShooting, BaseConfig.TimeBetweenShots, false);
+}
+
+void ULinetraceType::SpawnTrailEffect(const FVector & StartPoint, const FVector & EndPoint)
+{
+	if (TrailFX)
+	{
+
+		UParticleSystemComponent* TrailPSC = UGameplayStatics::SpawnEmitterAtLocation(this, TrailFX, StartPoint);
+		if (TrailPSC)
+		{
+			TrailPSC->SetVectorParameter(TrailTargetParam, EndPoint);
+		}
+	}
 }
