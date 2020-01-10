@@ -22,6 +22,19 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	class UCameraComponent* Camera;
 
+	/** default inventory list */
+	UPROPERTY(EditDefaultsOnly, Category = Inventory)
+	TArray<TSubclassOf<class AWeaponBase> > DefaultInventoryClasses;
+
+	/** weapons in inventory */
+	UPROPERTY(Transient)
+	TArray<class AWeaponBase*> Inventory;
+
+	/** currently equipped weapon */
+	UPROPERTY(Transient)
+	class AWeaponBase* CurrentWeapon;
+
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -29,6 +42,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	class AWeaponBase* FindWeapon(TSubclassOf<class AWeaponBase> WeaponClass);
+	void EquipWeapon(class AWeaponBase* Weapon);
 
 	void MoveForward(float Val);
 	void MoveRight(float Val);

@@ -4,13 +4,13 @@
 #include "ClientPlayer.h"
 #include "Components/InputComponent.h"
 #include "Camera/CameraComponent.h"
+#include "WeaponBase.h"
 
 // Sets default values
 AClientPlayer::AClientPlayer()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	AutoPossessPlayer = EAutoReceiveInput::Player0;
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(GetRootComponent());
 }
@@ -20,6 +20,23 @@ void AClientPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+AWeaponBase* AClientPlayer::FindWeapon(TSubclassOf<class AWeaponBase> WeaponClass)
+{
+	for (int32 i = 0; i < Inventory.Num(); i++)
+	{
+		if (Inventory[i] && Inventory[i]->IsA(WeaponClass))
+		{
+			return Inventory[i];
+		}
+	}
+	return NULL;
+}
+
+void AClientPlayer::EquipWeapon(AWeaponBase * Weapon)
+{
+
 }
 
 // Called every frame
